@@ -11,13 +11,14 @@ class Solution:
 
     def searchInsert(self, nums: List[int], target: int) -> int:
         '''
-        >>> searchInsert(self,[1,3,5,6], 5)
+        >>> o = Solution()
+        >>> o.searchInsert([1,3,5,6], 5)
         2
-        >>> searchInsert(self, [1,3,5,6], 2)
+        >>> o.searchInsert([1,3,5,6], 2)
         1
-        >>> searchInsert(self, [1,3,5,6], 7)
+        >>> o.searchInsert([1,3,5,6], 7)
         4
-        >>> searchInsert(self, [1,3,5,6], 0)
+        >>> o.searchInsert([1,3,5,6], 0)
         0
         '''
 
@@ -41,3 +42,42 @@ if __name__ == '__main__':
     #o = Solution()
     #val= o.searchInsert([1,3,5,6], 7)
     #print(val)
+
+
+""":OUTPUT:
+
+PS D:\> python -m doctest -v "35 Search Insert Position.py"
+Trying:
+    o = Solution()
+Expecting nothing
+ok
+Trying:
+    o.searchInsert([1,3,5,6], 5)
+Expecting:
+    2
+ok
+Trying:
+    o.searchInsert([1,3,5,6], 2)
+Expecting:
+    1
+ok
+Trying:
+    o.searchInsert([1,3,5,6], 7)
+Expecting:
+    4
+ok
+Trying:
+    o.searchInsert([1,3,5,6], 0)
+Expecting:
+    0
+ok
+2 items had no tests:
+    35 Search Insert Position
+    35 Search Insert Position.Solution
+1 items passed all tests:
+   5 tests in 35 Search Insert Position.Solution.searchInsert
+5 tests in 3 items.
+5 passed and 0 failed.
+Test passed.
+
+"""
