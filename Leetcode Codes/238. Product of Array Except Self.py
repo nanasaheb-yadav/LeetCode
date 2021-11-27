@@ -5,8 +5,6 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 
 You must write an algorithm that runs in O(n) time and without using the division operation.
 
-
-
 Example 1:
 
 Input: nums = [1,2,3,4]
@@ -16,6 +14,13 @@ from typing import List
 
 
 def productExceptSelf(nums: List[int]) -> List[int]:
+
+    """
+    >>> productExceptSelf([1, 2, 3, 4, 5])
+    [120, 60, 40, 30, 24]
+    >>> productExceptSelf([-1,1,0,-3,3])
+    [0, 0, 9, 0, 0]
+    """
     prod = []
     n = len(nums)
     if n == 1:
@@ -49,7 +54,6 @@ def productExceptSelf(nums: List[int]) -> List[int]:
         return left
 
 
-# Driver Code
-ar = [1, 2, 3, 4, 5]
-
-print(productExceptSelf(ar))
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
