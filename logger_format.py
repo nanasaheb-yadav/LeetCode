@@ -25,10 +25,11 @@ def log_path_checker(logfile_name):
 def setup_logging(logfile_name):
     """
     set common logging json format using pythonjsonlogger.
-    This structured way of json format is designed to make kibana dashboard
-	:param logfile: file name as log file name created 
-    :return: json format logger class which includes level, jsonhandler, message,levelname,etc
+    This structured way of json format is designed to make kibana dashboard.
+    :param logfile:
+    :return: logger object
     """
+
     logfile = log_path_checker(logfile_name)
     if os.path.exists(logfile):
         json_handler = logging.FileHandler(logfile, mode='a')
