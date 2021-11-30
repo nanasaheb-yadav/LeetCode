@@ -1,0 +1,8 @@
+{"levelname": "INFO", "asctime": "2021-11-30 22:25:51,070", "message": "Start", "exc_info": null}
+{"levelname": "INFO", "asctime": "2021-11-30 22:25:56,008", "message": "END ", "exc_info": null}
+{"levelname": "INFO", "message": "Start", "asctime": "2021-11-30 22:27:58,598", "exc_info": "NoneType: None"}
+{"levelname": "INFO", "message": "END ", "asctime": "2021-11-30 22:27:58,598", "exc_info": false}
+{"levelname": "INFO", "message": "Start", "asctime": "2021-11-30 22:27:59,947", "exc_info": "NoneType: None"}
+{"levelname": "INFO", "message": "END ", "asctime": "2021-11-30 22:27:59,947", "exc_info": false}
+{"levelname": "INFO", "message": "Start", "asctime": "2021-11-30 22:29:33,541", "exc_info": "NoneType: None"}
+{"levelname": "ERROR", "message": "Failed end", "asctime": "2021-11-30 22:29:33,541", "exc_info": "Traceback (most recent call last):\n  File \"D:\\Python\\GIT Projects\\LeetCode\\run.py\", line 9, in <module>\n    o=2/0\nZeroDivisionError: division by zero"}

@@ -35,7 +35,7 @@ def setup_logging(logfile_name):
         json_handler = logging.FileHandler(logfile, mode='a')
     else:
         json_handler = logging.FileHandler(logfile, mode='w')
-    format_str = '%(levelname)%(asctime)%(message)%(exc_info)'
+    format_str = '%(levelname)%(message)%(asctime)%(exc_info)'
     formatter = jsonlogger.JsonFormatter(format_str)
     json_handler.setFormatter(formatter)
     logger = logging.getLogger(__name__)
