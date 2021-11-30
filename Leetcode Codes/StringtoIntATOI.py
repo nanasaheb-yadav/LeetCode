@@ -15,4 +15,3 @@ def myAtoi( s: str) -> int:
 
     return res * sign
 
-print(myAtoi("42 word"))
