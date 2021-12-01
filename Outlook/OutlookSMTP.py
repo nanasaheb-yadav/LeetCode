@@ -196,22 +196,14 @@ class Outlook_Mails:
             print(e)
 
     def ReadSubjectMail(self, SubjectSearch, getList=False):
-        ''' Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
+        """ Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
             If getList = True, then it sends all the message that matches the Subject else it will send the first matched Subject.
-        '''
-
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Subject Regular Expression to be searched is : " + str(
-                SubjectSearch), extra=self.extra_dict_common)
-
+        """
         try:
             # folder = outlook.Folders.Item(mailboxFolder)
             # inbox = folder.Folders.Item(mailboxSubFolder)
             self.messageList = []
             self.messages = self.inbox.Items
-            self.logger.info(
-                "Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Mails sorting based on [ReceivedTime]",
-                extra=self.extra_dict_common)
             self.messages.Sort("[ReceivedTime]", True)
             self.message = self.messages.GetFirst()
             while self.message:
@@ -233,18 +225,10 @@ class Outlook_Mails:
             else:
                 return self.messageList
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
+            print(e)
 
     def ForwardMail(self, Subject, to, additionalSubject, additionalBody):
         ''' Forward the searched Subject Mail with additional Subject and Body to Receiver '''
-
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ForwardMail(), Message: Subject Regular Expression to be searched and Receiver are : " + str(
-                Subject) + " " + str(to), extra=self.extra_dict_common)
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ForwardMail(), Message: Additional Subject and Body are : " + str(
-                additionalSubject) + "\n" + str(additionalBody), extra=self.extra_dict_common)
 
         try:
             self.forwardMessage = self.ReadSubjectMail(Subject, False)
@@ -255,24 +239,14 @@ class Outlook_Mails:
                 self.forwardMessage.Subject = additionalSubject + ": " + self.forwardMessage.Subject
                 self.forwardMessage.To = str(to)
                 self.forwardMessage.Send()
-                self.logger.info("Class: Outlook_Mails, Function: ForwardMail(), Message: Mail forwarded successfully",
-                                 extra=self.extra_dict_common)
                 return True
             else:
-                self.logger.info("Class: Outlook_Mails, Function: ForwardMail(), Message: No mail with subject found",
-                                 extra=self.extra_dict_common)
                 return False
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: ForwardMail(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return False
 
     def ReplyAll(self, Subject, AdditionalBody):
         ''' ReplyAll the specific Subject Mail to all Receivers mentioned in mail with Additional Body '''
-
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ReplyAll(), Message: Subject Regular Expression to be searched and Additional Body are : " + str(
-                Subject) + "\n" + AdditionalBody, extra=self.extra_dict_common)
 
         try:
             self.replyAllMessage = self.ReadSubjectMail(Subject, False)
@@ -280,24 +254,14 @@ class Outlook_Mails:
                 self.replyAllMessage.ReplyAll()
                 self.replyAllMessage.Body = AdditionalBody + self.replyAllMessage.Body
                 self.replyAllMessage.Send()
-                self.logger.info("Class: Outlook_Mails, Function: ReplyAll(), Message: Mail Replied ALL successfully",
-                                 extra=self.extra_dict_common)
                 return True
             else:
-                self.logger.info("Class: Outlook_Mails, Function: ReplyAll(), Message: No mail with subject found",
-                                 extra=self.extra_dict_common)
                 return False
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: ReplyAll(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return False
 
     def Reply(self, Subject, AdditionalBody):
         ''' Reply the specific Subject Mail to Sender mentioned in mail with Additional Body '''
-
-        self.logger.info(
-            "Class: Outlook_Mails, Function: Reply(), Message: Subject Regular Expression to be searched and Additional Body are : " + str(
-                Subject) + "\n" + str(AdditionalBody), extra=self.extra_dict_common)
 
         try:
             self.replyMessage = self.ReadSubjectMail(Subject, False)
@@ -305,29 +269,19 @@ class Outlook_Mails:
                 self.replyMessage.Reply()
                 self.replyMessage.Body = AdditionalBody + self.replyMessage.Body
                 self.replyMessage.Send()
-                self.logger.info("Class: Outlook_Mails, Function: Reply(), Message: Mail Replied successfully",
-                                 extra=self.extra_dict_common)
                 return True
             else:
-                self.logger.info("Class: Outlook_Mails, Function: Reply(), Message: No mail with subject found",
-                                 extra=self.extra_dict_common)
                 return False
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: Reply(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return False
 
     def MoveToFolderInsideInbox(self, messageInstance, inboxFolder):
         ''' Move the specific message to a particular inboxFolder inside Inbox '''
 
         try:
-            self.logger.info(
-                "Class: Outlook_Mails, Function: MoveToFolderInsideInbox(), Message: Moving messageInstance with Subject to folder : " + str(
-                    messageInstance.Subject) + "-->" + str(inboxFolder), extra=self.extra_dict_common)
             messageInstance.Move(self.inbox.folders(inboxFolder))
             return True
         except Exception as e:
-            logging.exception("Class: Outlook_Mails, Function: MoveToFolderInsideInbox(), Message: Exception Occurred")
             return False
 
     def DownloadAttachment(self, messageInstance, systemPath):
@@ -336,13 +290,8 @@ class Outlook_Mails:
         try:
             for attachment in messageInstance.Attachments:
                 attachment.SaveASFile(systemPath + '\\' + attachment.FileName)
-                self.logger.info(
-                    "Class: Outlook_Mails, Function: DownloadAttachment(), Message: Downloading attachments to System Folder : " + str(
-                        attachment.FileName) + " " + str(systemPath), extra=self.extra_dict_common)
                 return True
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: Move(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return False
 
     def DownloadAttachmentpath(self, messageInstance, systemPath):
@@ -353,12 +302,8 @@ class Outlook_Mails:
                 fname = systemPath + '\\' + attachment.FileName
                 attachment.SaveASFile(fname)
                 downloaded_paths.append(fname)
-                self.logger.info(
-                    "Class: Outlook_Mails, Function: DownloadAttachment(), Message: Downloading attachments to System Folder : " + str(
-                        attachment.FileName) + " " + str(systemPath))
             return downloaded_paths
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: Move(), Message: Exception Occurred")
             return downloaded_paths
 
     def DownloadAttachmentpath_sp_new(self, messageInstance, systemPath, excel_obj):
@@ -382,12 +327,8 @@ class Outlook_Mails:
                 wb.SaveAs(fname, FileFormat=56)
                 wb.Close()
                 downloaded_paths.append(fname)
-                self.logger.info(
-                    "Class: Outlook_Mails, Function: DownloadAttachment(), Message: Downloading attachments to System Folder : " + str(
-                        attachment.FileName) + " " + str(systemPath))
             return downloaded_paths
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: Move(), Message: Exception Occurred")
             return downloaded_paths
 
     def DownloadAttachmentpath_sp(self, messageInstance, systemPath, excel_obj):
@@ -411,32 +352,22 @@ class Outlook_Mails:
                 wb.SaveAs(fname, FileFormat=56)
                 wb.Close()
                 downloaded_paths.append(fname)
-                self.logger.info(
-                    "Class: Outlook_Mails, Function: DownloadAttachment(), Message: Downloading attachments to System Folder : " + str(
-                        attachment.FileName) + " " + str(systemPath))
             return downloaded_paths
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: Move(), Message: Exception Occurred")
             return downloaded_paths
 
     def GetBodyOfMail(self, messageInstance):
         ''' Get the Body of the Mail '''
         try:
-            self.logger.info("Class: Outlook_Mails, Function: GetBodyOfMail(), Message: Get Body of Mail : ",
-                             extra=self.extra_dict_common)
             return messageInstance.Body
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: GetBodyOfMail(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return ''
 
     def GetBodyOfMailHtml(self, messageInstance):
         ''' Get the Body of the Mail '''
         try:
-            self.logger.info("Class: Outlook_Mails, Function: GetBodyOfMail(), Message: Get Body of Mail : ")
             return messageInstance.HTMLBody
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: GetBodyOfMail(), Message: Exception Occurred")
             return ''
 
     def attach_image(self, img_dict):
@@ -460,11 +391,6 @@ class Outlook_Mails:
     def SendMailWithImage(self, sender, to, subject, mailBody, attachment, host_name, port_no, password, images=[]):
         ''' Send Mail to specific sender to single/multiple contacts with passed subject and MailBody using SMTP '''
 
-        self.logger.info(
-            "Class: Outlook_Mails, Function: SendMail(), Message: Sender and Receiver are : " + str(sender) + " " + str(
-                to))
-        self.logger.info("Class: Outlook_Mails, Function: SendMail(), Message: Subject and MailBody are : " + str(
-            subject) + "\n" + str(mailBody))
         try:
             self.msg = MIMEMultipart('alternative')
             self.msg["From"] = sender
@@ -491,7 +417,6 @@ class Outlook_Mails:
                     part.add_header('Content-Disposition', 'attachment; filename="%s"'
                                     % os.path.basename(att))
                     self.msg.attach(part)
-                    self.logger.info("Class: Outlook_Mails, Function: SendMail(), Message: File Attached : " + str(att))
 
             self.smtp = smtplib.SMTP(host=host_name, port=port_no)
             self.smtp.ehlo()
@@ -500,22 +425,13 @@ class Outlook_Mails:
             self.smtp.login(login, password)
             self.smtp.sendmail(sender, recipients, self.msg.as_string())
             self.smtp.close()
-            self.logger.info(
-                "Class: Outlook_Mails, Function: SendMail(), Message: Mail Sent Successfully using SMTP : " + self.smtpString)
             return True
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: SendMail(), Message: Exception Occurred")
             return False
 
     def SendMailUpdated(self, sender, to, subject, mailBody, attachment, host_name, port_no, password):
         ''' Send Mail to specific sender to single/multiple contacts with passed subject and MailBody using SMTP '''
 
-        self.logger.info(
-            "Class: Outlook_Mails, Function: SendMail(), Message: Sender and Receiver are : " + str(sender) + " " + str(
-                to), extra=self.extra_dict_common)
-        self.logger.info(
-            "Class: Outlook_Mails, Function: SendMailUpdated(), Message: Subject and MailBody are : " + str(
-                subject) + "\n" + str(mailBody), extra=self.extra_dict_common)
         try:
             self.msg = MIMEMultipart('alternative')
             self.msg["From"] = sender
@@ -536,8 +452,6 @@ class Outlook_Mails:
                     part.add_header('Content-Disposition', 'attachment; filename="%s"'
                                     % os.path.basename(att))
                     self.msg.attach(part)
-                    self.logger.info("Class: Outlook_Mails, Function: SendMail(), Message: File Attached : " + str(att),
-                                     extra=self.extra_dict_common)
 
             self.smtp = smtplib.SMTP(host=host_name, port=port_no)
             self.smtp.ehlo()
@@ -546,23 +460,12 @@ class Outlook_Mails:
             self.smtp.login(login, password)
             self.smtp.sendmail(sender, recipients, self.msg.as_string())
             self.smtp.close()
-            self.logger.info(
-                "Class: Outlook_Mails, Function: SendMail(), Message: Mail Sent Successfully using SMTP : " + self.smtpString,
-                extra=self.extra_dict_common)
             return True
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: SendMail(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
             return False
 
     def SendMail(self, sender, to, subject, mailBody, attachment):
         ''' Send Mail to specific sender to single/multiple contacts with passed subject and MailBody using SMTP '''
-
-        self.logger.info(
-            "Class: Outlook_Mails, Function: SendMail(), Message: Sender and Receiver are : " + str(sender) + " " + str(
-                to))
-        self.logger.info("Class: Outlook_Mails, Function: SendMail(), Message: Subject and MailBody are : " + str(
-            subject) + "\n" + str(mailBody))
 
         try:
             self.msg = MIMEMultipart('alternative')
@@ -582,14 +485,13 @@ class Outlook_Mails:
                     part.add_header('Content-Disposition', 'attachment; filename="%s"'
                                     % os.path.basename(att))
                     self.msg.attach(part)
-                    self.logger.info("Class: Outlook_Mails, Function: SendMail(), Message: File Attached : " + str(att))
 
             self.smtp = smtplib.SMTP(self.smtpString)
             self.smtp.sendmail(sender, recipients, self.msg.as_string())
             self.smtp.close()
-            self.logger.info(
-                "Class: Outlook_Mails, Function: SendMail(), Message: Mail Sent Successfully using SMTP : " + self.smtpString)
             return True
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: SendMail(), Message: Exception Occurred")
             return False
+
+o = Outlook_Mails()
+print(o)
