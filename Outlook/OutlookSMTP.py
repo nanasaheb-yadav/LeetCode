@@ -42,25 +42,19 @@ class Outlook_Mails:
                 self.outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
             self.inbox = self.outlook.GetDefaultFolder(6)
         except Exception as e:
-            self.logger.exception("Message: Class: Outlook_Mails, Function: __init__, Exception\n {}".format(e),
-                                  extra=self.extra_dict_common)
+            print(e)
 
     def ReadSubjectMailFolder(self, SubjectSearch, folder_name, getList=False, range_days=1, mkey=0):
-        ''' Read Mail with specific Subject like regex ---"Access <SubjectSearch:"".*"">"--- or complete Subject.
+
+        """ Read Mail with specific Subject like regex ---"Access <SubjectSearch:"".*"">"--- or complete Subject.
             If getList = True, then it sends all the message that matches the Subject else it will send the first matched Subject.
-        '''
-        self.logger.info(
-            "Message: Class: Outlook_Mails, Function: ReadSubjectMailFolder(),  Subject Regular Expression to be searched is : " + str(
-                SubjectSearch), extra=self.extra_dict_common)
+        """
         fmt = '%Y-%m-%d'
         current_date = datetime.now().strftime(fmt)
         current_date = datetime.strptime(current_date, fmt)
         try:
             self.messageList = []
             self.messages = self.inbox.Folders.Item(folder_name).Items
-            self.logger.info(
-                "Message: Class: Outlook_Mails, Function: ReadSubjectMailFolder(),  Mails sorting based on [ReceivedTime]",
-                extra=self.extra_dict_common)
             self.messages.Sort("[ReceivedTime]", True)
             self.message = self.messages.GetFirst()
             while self.message:
@@ -76,17 +70,11 @@ class Outlook_Mails:
                     received_date = datetime.strptime(received_date, fmt)
                     delta = (current_date - received_date).days
                     if mkey and re.search(SubjectSearch, new_message_txt) and delta <= range_days:
-                        self.logger.info(
-                            "Message: Class: Outlook_Mails, Function: ReadSubjectMailFolder(),  Mails got by subject name=%s" % (
-                                new_message_txt), extra=self.extra_dict_common)
                         if getList == True:
                             self.messageList.append(self.message)
                         elif getList == False:
                             return self.message
                     elif (not mkey) and (SubjectSearch.strip() == new_message_txt.strip()) and delta <= range_days:
-                        self.logger.info(
-                            "Class: Outlook_Mails, Function: ReadSubjectMailFolder(), Message: Mails got by subject name=%s" % (
-                                new_message_txt), extra=self.extra_dict_common)
                         if getList == True:
                             self.messageList.append(self.message)
                         elif getList == False:
@@ -97,26 +85,18 @@ class Outlook_Mails:
             else:
                 return self.messageList
         except Exception as e:
-            self.logger.exception(
-                "Message: Class: Outlook_Mails, Function: ReadSubjectMailFolder(),  Exception Occurred",
-                extra=self.extra_dict_common)
+            print(e)
 
     def ReadSubjectMailFolderSub(self, SubjectSearch, folder_name, range_days=7, mkey=0):
-        ''' Read Mail with specific Subject like regex ---"Access <SubjectSearch:"".*"">"--- or complete Subject.
+        """ Read Mail with specific Subject like regex ---"Access <SubjectSearch:"".*"">"--- or complete Subject.
             If getList = True, then it sends all the message that matches the Subject else it will send the first matched Subject.
-        '''
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ReadSubjectMailFolderSub(), Message: Subject Regular Expression to be searched is : " + str(
-                SubjectSearch), extra=self.extra_dict_common)
+        """
         fmt = '%Y-%m-%d'
         current_date = datetime.now().strftime(fmt)
         current_date = datetime.strptime(current_date, fmt)
         try:
             self.messageList = []
             self.messages = self.inbox.Folders.Item(folder_name).Items
-            self.logger.info(
-                "Class: Outlook_Mails, Function: ReadSubjectMailFolderSub(), Message: Mails sorting based on [ReceivedTime]",
-                extra=self.extra_dict_common)
             self.messages.Sort("[ReceivedTime]", True)
             self.message = self.messages.GetFirst()
             while self.message:
@@ -132,29 +112,18 @@ class Outlook_Mails:
                     received_date = datetime.strptime(received_date, fmt)
                     delta = (current_date - received_date).days
                     if mkey and re.search(SubjectSearch, new_message_txt) and delta <= range_days:
-                        self.logger.info(
-                            "Class: Outlook_Mails, Function: ReadSubjectMailFolderSub(), Message: Mails got by subject name=%s" % (
-                                new_message_txt), extra=self.extra_dict_common)
                         self.messageList.append((self.message, new_message_txt))
                     elif (not mkey) and (SubjectSearch.strip() == new_message_txt.strip()) and delta <= range_days:
-                        self.logger.info(
-                            "Class: Outlook_Mails, Function: ReadSubjectMailFolderSub(), Message: Mails got by subject name=%s" % (
-                                new_message_txt), extra=self.extra_dict_common)
                         self.messageList.append((self.message, new_message_txt))
                 self.message = self.messages.GetNext()
             return self.messageList
         except Exception as e:
-            self.logger.exception(
-                "Class: Outlook_Mails, Function: ReadSubjectMailFolderSub(), Message: Exception Occurred",
-                extra=self.extra_dict_common)
+            print(e)
 
     def ReadSubjectMailUpdatedFilter(self, SubjectSearch, getList=False, range_days=7):
-        ''' Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
+        """ Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
             If getList = True, then it sends all the message that matches the Subject else it will send the first matched Subject.
-        '''
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ReadSubjectMailUpdatedFilter(), Message: Subject Regular Expression to be searched is : " + str(
-                SubjectSearch), extra=self.extra_dict_common)
+        """
         fmt = '%Y-%m-%d'
         current_date = datetime.now().strftime(fmt)
         current_date = datetime.strptime(current_date, fmt)
@@ -163,9 +132,6 @@ class Outlook_Mails:
             # inbox = folder.Folders.Item(mailboxSubFolder)
             self.messageList = []
             self.messages = self.inbox.Folders.Item("Clarity").Items
-            self.logger.info(
-                "Class: Outlook_Mails, Function: ReadSubjectMailUpdatedFilter(), Message: Mails sorting based on [ReceivedTime]",
-                extra=self.extra_dict_common)
             self.messages.Sort("[ReceivedTime]", True)
             self.message = self.messages.GetFirst()
             while self.message:
@@ -185,9 +151,6 @@ class Outlook_Mails:
                     received_date = datetime.strptime(received_date, fmt)
                     delta = (current_date - received_date).days
                     if re.search(SubjectSearch, new_message_txt) and delta <= range_days:
-                        self.logger.info(
-                            "Class: Outlook_Mails, Function: ReadSubjectMailUpdatedFilter(), Message: Mails got by subject name=%s" % (
-                                new_message_txt), extra=self.extra_dict_common)
                         if getList == True:
                             self.messageList.append(self.message)
                         elif getList == False:
@@ -198,26 +161,18 @@ class Outlook_Mails:
             else:
                 return self.messageList
         except Exception as e:
-            self.logger.exception(
-                "Class: Outlook_Mails, Function: ReadSubjectMailUpdatedFilter(), Message: Exception Occurred",
-                extra=self.extra_dict_common)
+            print(e)
 
     def ReadSubjectMailUpdated(self, SubjectSearch, getList=False):
-        ''' Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
+        """ Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
             If getList = True, then it sends all the message that matches the Subject else it will send the first matched Subject.
-        '''
+        """
 
-        self.logger.info(
-            "Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Subject Regular Expression to be searched is : " + str(
-                SubjectSearch), extra=self.extra_dict_common)
         try:
             # folder = outlook.Folders.Item(mailboxFolder)
             # inbox = folder.Folders.Item(mailboxSubFolder)
             self.messageList = []
             self.messages = self.inbox.Items
-            self.logger.info(
-                "Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Mails sorting based on [ReceivedTime]",
-                extra=self.extra_dict_common)
             self.messages.Sort("[ReceivedTime]", True)
             self.message = self.messages.GetFirst()
             while self.message:
@@ -238,8 +193,7 @@ class Outlook_Mails:
             else:
                 return self.messageList
         except Exception as e:
-            self.logger.exception("Class: Outlook_Mails, Function: ReadSubjectMail(), Message: Exception Occurred",
-                                  extra=self.extra_dict_common)
+            print(e)
 
     def ReadSubjectMail(self, SubjectSearch, getList=False):
         ''' Read Mail with specific Subject like regex ---"Access <LoginId:"".*"">"--- or complete Subject.
