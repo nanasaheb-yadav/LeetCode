@@ -104,4 +104,14 @@ Uvicorn currently supports HTTP/1.1 and WebSockets. Support for HTTP/2 is planne
                                   the current working directory.  [default: .]
   <br>--factory                       Treat APP as an application factory, i.e. a
                                   () -> <ASGI app> callable.  [default: False]
-  <br>--help                          Show this message and exit. """
+  <br>--help                          Show this message and exit.
+
+
+
+'''
+
+    import uvicorn
+    async def app(scope, receive, send):
+        if __name__ == "__main__":
+            uvicorn.run("example:app", host="127.0.0.1", port=5000, log_level="info")
+'''
